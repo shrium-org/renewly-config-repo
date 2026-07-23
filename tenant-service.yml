@@ -1,0 +1,57 @@
+
+server:
+  port: 8083
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://ajaymalah2003_db_user:F3mglocKG5ms5XX9@shrium.cj882px.mongodb.net/tenant_service_db?appName=shrium
+      auto-index-creation: false
+
+  cloud:
+    config:
+      retry:
+        max-attempts: 6
+        initial-interval: 1000
+        multiplier: 1.5
+
+  config:
+    import: optional:configserver:http://localhost:8888
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://auth.shrium.com/realms/renewly
+
+axon:
+  axonserver:
+    enabled: false
+  kafka:
+    bootstrap-servers: localhost:9094
+    default-topic: tenant-events
+    publisher:
+      confirmation-mode: transactional
+
+
+
+eureka:
+  register-with-eureka: true
+  fetch-registry: true
+  service-url:
+    defaultZone: http://localhost:8761/eureka/
+  instance:              # <-- you have a leading space before "instance:"
+    prefer-ip-address: true
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,env
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
